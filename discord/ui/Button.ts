@@ -1,6 +1,6 @@
-import type { ButtonStyleTypes } from "discord-interactions";
+import { ButtonStyleTypes } from "discord-interactions";
 
-const Button = (buttonLabel: string, buttonID: string, buttonStyle: ButtonStyleTypes = 1) => {
+const Button = (buttonLabel: string, buttonID: string, buttonStyle: ButtonStyleTypes = ButtonStyleTypes.PRIMARY) => {
     return {
         type: 2,
         style: buttonStyle,

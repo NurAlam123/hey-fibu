@@ -1,11 +1,15 @@
 import express from 'express';
 import { InteractionResponseType, InteractionType, MessageComponentTypes } from 'discord-interactions';
-import sendMessage from './discord/sendMessage';
 import verifyDiscordRequest from './discord/verifyDiscordRequest';
+import axios from 'axios';
+import { syncCommand } from './discord/bot/slashCommands';
+import commands from './commands';
 
 // CONSTANTS
 const PUBLIC_KEY = process.env.PUBLIC_KEY || '';
 const PORT = process.env.PORT || 5000;
+const TOKEN = process.env.TOKEN || '';
+const APP_ID = process.env.APP_ID || '';
 
 
 const app = express();
@@ -13,7 +17,14 @@ const app = express();
 // Middleware
 app.use(express.json({ verify: verifyDiscordRequest(PUBLIC_KEY) }));
 
+// Config axios
+axios.defaults.baseURL = "https://discord.com/api/v10/";
+axios.defaults.headers.common['Authorization'] = `Bot ${TOKEN}`;
+axios.defaults.headers.common['Content-Type'] = "application/json; charset=UTF-8";
+axios.defaults.headers.common['User-Agent'] = "DiscordBot (https://discord.com, 1.0.0)";
 
+
+// ==== Routes ====
 app.get("/", (req, res) => {
     res.send("Running bot!")
 })
@@ -34,13 +45,8 @@ app.post("/interactions", async (req, res) => {
         // Application Commands
         if (type === InteractionType.APPLICATION_COMMAND) {
             const { name } = data;
-            if (name === "ping") {
-                await sendMessage(res, "Pong!!!");
-            }
-            if (name === "showui") {
-                console.log("INSIDE")
-                await sendMessage(res, "UI")
-            }
+            const slashCommands = commands.filter(command => command.name === name)[0];
+            slashCommands.ext(res);
         }
     } catch (err) {
         console.error(err)
@@ -54,6 +60,7 @@ app.post("/interactions", async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+    // await syncCommand(APP_ID, "839126064621027329");
     console.log(`Bot running at port: ${PORT}`);
 })
