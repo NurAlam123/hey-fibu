@@ -6,7 +6,7 @@ import sendMessage from "../discord/bot/sendMessage";
 const showui = async (res: Response) => {
     const ui = [
         ActionRow([
-            Button("Slap me", "slap")
+            Button("Click me", "click")
         ])
     ]
 

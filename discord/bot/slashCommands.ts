@@ -1,12 +1,9 @@
-import axios from "axios";
 import commands from "../../commands";
+import axiosFetch from "../../utils/axiosFetch";
 
 const installCommands = async (endpoint: string, method: string, commands: string) => {
-    const baseURL = process.env.BASE_API_URL || "";
-    const url = baseURL + endpoint;
-
     // Send commands to application
-    const res = await axios(url, {
+    const res = await axiosFetch(endpoint, {
         method: method,
         data: commands
     })
@@ -47,13 +44,13 @@ const installGlobalCommands = async (applicationID: string, commands: Array<Obje
 
 // Fetch global application commands
 const getGlobalCommands = async (appID: string) => {
-    const res = await axios.get(`/applications/${appID}/commands`)
+    const res = await axiosFetch(`/applications/${appID}/commands`, { method: "get" })
     return res.data
 }
 
 // Fetch guild application commands
 const getGuildCommands = async (appID: string, guildID: number | string) => {
-    const res = await axios.get(`/applications/${appID}/guilds/${guildID}/commands`)
+    const res = await axiosFetch(`/applications/${appID}/guilds/${guildID}/commands`, { method: "get" })
     return res.data
 }
 

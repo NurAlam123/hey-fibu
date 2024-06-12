@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "dev": "bun run --watch index.ts",
-    "register": "bun run slash_commands.ts"
+    "register": "bun run registerCommands.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"
