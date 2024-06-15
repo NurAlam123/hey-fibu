@@ -3,10 +3,6 @@ import type { Response } from "express"
 import Message from "../ui/Message"
 import type { MessageTypes } from "../discordTypes";
 
-type T = {
-    type?: number,
-    data: MessageTypes
-}
 
 const sendMessage = async (res: Response, { content = "", components = [], tts = false }: MessageTypes) => {
     return res.send({

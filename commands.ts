@@ -1,7 +1,9 @@
 import ping from "./cogs/ping";
 import showui, { showUiHandler } from "./cogs/show_ui";
 
-type commandType = {
+
+// Custom types
+type CommandTypes = {
     name: string,
     command: {
         name: string,
@@ -12,12 +14,13 @@ type commandType = {
     exec: Function
 }
 
-type messageComponentsType = {
+type MessageComponentsTypes = {
     custom_id: string,
     handler: Function
 }
 
-const commands: Array<commandType> = [
+// Application Commands
+const commands: Array<CommandTypes> = [
     {
         name: "ping",
         command: {
@@ -40,7 +43,8 @@ const commands: Array<commandType> = [
     },
 ]
 
-export const messageComponents: Array<messageComponentsType> = [
+// Message Components Handlers
+export const messageComponents: Array<MessageComponentsTypes> = [
     {
         custom_id: "button_click",
         handler: showUiHandler

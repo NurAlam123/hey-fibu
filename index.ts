@@ -44,7 +44,7 @@ app.post("/interactions", async (req, res) => {
         if (type === InteractionType.MESSAGE_COMPONENT && id) {
             const { custom_id } = data;
             const components = messageComponents.filter(components => components.custom_id === custom_id)
-            !(components.length < 0) && components[0].handler(res, req.body);
+            !(components.length <= 0) && components[0].handler(res, req.body);
         }
     } catch (err) {
         console.error(err)

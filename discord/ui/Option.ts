@@ -1,13 +1,14 @@
-import type { optionStructureType } from "../discordTypes";
-import Emoji from "../models/Emoji";
+import type { OptionStructureTypes } from "../discordTypes";
 
-const Option = (label: string, value: string, description: string = '', emoji: string = '', is_default: boolean = false) => {
-    const optionStructure: optionStructureType = {
+const Option = ({ label, value, description = '', emoji = '', is_default = false }: OptionStructureTypes) => {
+    const optionStructure = {
         label,
         value,
         default: is_default,
         ...(description && { description }),
-        ...(emoji && { emoji: Emoji(emoji) })
+        ...(emoji && { emoji })
     }
     return optionStructure;
 }
+
+export default Option;
