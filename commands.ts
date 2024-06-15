@@ -1,5 +1,5 @@
 import ping from "./cogs/ping";
-import showui from "./cogs/show_ui";
+import showui, { showUiHandler } from "./cogs/show_ui";
 
 type commandType = {
     name: string,
@@ -9,7 +9,12 @@ type commandType = {
         type: number,
     },
     global: boolean,
-    ext: Function
+    exec: Function
+}
+
+type messageComponentsType = {
+    custom_id: string,
+    handler: Function
 }
 
 const commands: Array<commandType> = [
@@ -21,7 +26,7 @@ const commands: Array<commandType> = [
             type: 1,
         },
         global: true,
-        ext: ping
+        exec: ping,
     },
     {
         name: "showui",
@@ -31,8 +36,16 @@ const commands: Array<commandType> = [
             type: 1,
         },
         global: false,
-        ext: showui,
+        exec: showui,
     },
+]
+
+export const messageComponents: Array<messageComponentsType> = [
+    {
+        custom_id: "button_click",
+        handler: showUiHandler
+    },
+
 ]
 
 export default commands;

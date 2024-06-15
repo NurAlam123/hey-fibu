@@ -1,6 +1,6 @@
-import type { Button, ChannelSelect, InputText, MentionableSelect, RoleSelect, StringSelect, UserSelect } from "discord-interactions"
+import type { ButtonTypes, SelectMenuTypes } from "../discordTypes";
 
-const ActionRow = (components: Array<Button | StringSelect | InputText | UserSelect | RoleSelect | MentionableSelect | ChannelSelect>) => ({
+const ActionRow = (components: Array<(ButtonTypes | SelectMenuTypes)>) => ({
     type: 1,
     components: components
 })

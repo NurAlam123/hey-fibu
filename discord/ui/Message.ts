@@ -1,6 +1,7 @@
-import type { ActionRow } from "discord-interactions";
+import type { MessageTypes } from "../discordTypes";
 
-const Message = (content: string, components: Array<object> = [], tts: boolean = false) => ({
+
+const Message = ({ content = '', components = [], tts = false }: MessageTypes) => ({
     content,
     components,
     tts

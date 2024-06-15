@@ -1,12 +1,11 @@
 import express from 'express';
-import { InteractionResponseType, InteractionType, MessageComponentTypes } from 'discord-interactions';
+import { InteractionResponseType, InteractionType } from 'discord-interactions';
 import verifyDiscordRequest from './discord/verifyDiscordRequest';
-import commands from './commands';
+import commands, { messageComponents } from './commands';
 
 // CONSTANTS
 const PUBLIC_KEY = process.env.PUBLIC_KEY || '';
 const PORT = process.env.PORT || 5000;
-const APP_ID = process.env.APP_ID || '';
 
 // Express apps
 const app = express();
@@ -34,7 +33,7 @@ app.post("/interactions", async (req, res) => {
         if (type === InteractionType.APPLICATION_COMMAND) {
             const { name } = data;
             const slashCommands = commands.filter(command => command.name === name)[0];
-            slashCommands.ext(res);
+            slashCommands.exec(res);
         }
     } catch (err) {
         console.error(err)
@@ -42,10 +41,10 @@ app.post("/interactions", async (req, res) => {
 
     // handle message components
     try {
-        if (type === InteractionType.MESSAGE_COMPONENT) {
-            const { component_type, custom_id } = data;
-            if (component_type === MessageComponentTypes.BUTTON) {
-            }
+        if (type === InteractionType.MESSAGE_COMPONENT && id) {
+            const { custom_id } = data;
+            const components = messageComponents.filter(components => components.custom_id === custom_id)
+            !(components.length < 0) && components[0].handler(res, req.body);
         }
     } catch (err) {
         console.error(err)
