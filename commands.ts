@@ -1,5 +1,5 @@
 import ping from "./cogs/ping";
-import showui, { showUiHandler } from "./cogs/show_ui";
+import showui, { selectHandler, showUiHandler } from "./cogs/show_ui";
 
 
 // Custom types
@@ -49,6 +49,10 @@ export const messageComponents: Array<MessageComponentsTypes> = [
         custom_id: "button_click",
         handler: showUiHandler
     },
+    {
+        custom_id: "select_ui",
+        handler: selectHandler
+    }
 
 ]
 

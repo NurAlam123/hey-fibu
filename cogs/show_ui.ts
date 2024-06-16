@@ -64,6 +64,7 @@ export const showUiHandler = async (res: Response, body: InteractionObject) => {
 }
 
 export const selectHandler = async (res: Response, body: InteractionObject) => {
+    const values = body.data.values;
     // console.log(body)
     // const rolesData = {
     //     "meh": {
