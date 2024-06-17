@@ -1,19 +1,19 @@
 import type { ButtonStyleTypes, InteractionType } from "discord-interactions"
 
-export interface InteractionObject {
+export interface InteractionObject<T> {
     id?: string,
     application_id: string,
     type: InteractionType,
-    data: object,
-    guild: object,
+    data: T,
+    guild: Guild,
     guild_id: string,
-    channel: string,
+    channel: Channel,
     channel_id: string,
-    member: object,
-    user: object,
+    member: Member,
+    user: User,
     token: string,
     version: string,
-    message: object,
+    message: Message,
     app_permissions: string,
     locale: string,
     guild_locale: string,
@@ -50,6 +50,13 @@ export interface ApplicationStructure {
     install_params?: InstallParamsStructure,
     integration_types_config?: object,
     custom_install_url?: string,
+}
+
+export interface MessageComponentDataStructure {
+    custom_id: string,
+    component_type: number,
+    values?: Array<OptionStructureTypes | string>,
+    resolved?: ResolveDataStructure
 }
 
 type InstallParamsStructure = {
@@ -184,7 +191,7 @@ export interface AvatarDecorationDataStructure {
 }
 
 export interface Member {
-    user?: User,
+    user: User,
     nick?: string,
     avatar?: string,
     roles: Array<string>,
