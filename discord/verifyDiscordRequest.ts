@@ -3,8 +3,8 @@ import type { Request, Response } from "express";
 
 const verifyDiscordRequest = (clientKey: string) => {
     return (req: Request, res: Response, buf: Buffer, encoding: String) => {
-        const signature = req.get("X-Signature-Ed25519");
-        const timestamp = req.get("X-Signature-Timestamp");
+        const signature = req.get("X-Signature-Ed25519") as string;
+        const timestamp = req.get("X-Signature-Timestamp") as string;
 
         const isValidRequest = verifyKey(buf, signature, timestamp, clientKey);
         if (!isValidRequest) {

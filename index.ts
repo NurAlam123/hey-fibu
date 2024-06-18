@@ -1,5 +1,5 @@
 import express from 'express';
-import { InteractionResponseType, InteractionType } from 'discord-interactions';
+import { InteractionResponseType, InteractionType, verifyKeyMiddleware } from 'discord-interactions';
 import verifyDiscordRequest from './discord/verifyDiscordRequest';
 import commands, { messageComponents } from './commands';
 

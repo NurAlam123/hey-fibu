@@ -41,6 +41,9 @@ const commands: Array<CommandTypes> = [
         global: false,
         exec: showui,
     },
+    // {
+    //     name: "user"
+    // }
 ]
 
 // Message Components Handlers

@@ -4,13 +4,14 @@ import Message from "../ui/Message"
 import type { MessageTypes } from "../discordTypes";
 
 
-const sendMessage = async (res: Response, { content = "", components = [], tts = false }: MessageTypes) => {
+const sendMessage = async (res: Response, { content = "", components = [], tts = false, embeds = [] }: MessageTypes) => {
     return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: Message({
             content,
             components,
-            tts
+            tts,
+            embeds
         })
     })
 }

@@ -13,7 +13,7 @@ export interface InteractionObject<T> {
     user: User,
     token: string,
     version: string,
-    message: Message,
+    message: MessageStructure,
     app_permissions: string,
     locale: string,
     guild_locale: string,
@@ -66,8 +66,10 @@ type InstallParamsStructure = {
 
 export type MessageTypes = {
     content?: string,
-    components?: Array<object>,
-    tts?: boolean
+    components?: Array<MessageComponentDataStructure>,
+    tts?: boolean,
+    embeds?: Array<Embed>
+
 }
 
 export type ButtonTypes = {
@@ -154,7 +156,7 @@ export interface ResolveDataStructure {
     members: Member,
     roles: RoleObject,
     channels: Channel,
-    messages: Message,
+    messages: MessageStructure,
     attachments: Attachment
 }
 
@@ -290,7 +292,7 @@ export interface Channel {
     default_forum_layout?: number,
 }
 
-export interface Message {
+export interface MessageStructure {
     id: string,
     channel_id: string,
     author: User,
@@ -314,7 +316,7 @@ export interface Message {
     application_id?: string,
     message_reference?: MessageReferenceStructure,
     flags?: number,
-    referenced_message?: Message,
+    referenced_message?: MessageStructure,
     interaction_metadata?: MessageInteractionMetadataStructure,
     interaction?: MessageInteractionStructure,
     thread?: Channel,
@@ -367,7 +369,7 @@ type StickerItemStructure = {
 
 export interface Embed {
     title?: string,
-    type?: number
+    type?: string,
     description?: string,
     url?: string,
     timestamp?: string,

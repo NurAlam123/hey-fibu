@@ -24,8 +24,6 @@ const showui = async (res: Response) => {
 }
 
 export const showUiHandler = async (res: Response, body: InteractionObject<MessageComponentDataStructure>) => {
-    // console.log(body.guild_id)
-    // await getEmojis(body.guild_id)
     const ui = [
         ActionRow([
             SelectMenu({
@@ -70,8 +68,7 @@ export const selectHandler = async (res: Response, body: InteractionObject<Messa
     if (y) {
         const roleID = "1196073528592711742";
         // const role = await getRole(body.guild_id, {roleID});
-        const r = await addRole(body.guild_id, body.member.user.id, roleID);
-        console.log(r)
+        // const r = await addRole(body.guild_id, body.member.user.id, roleID);
     }
     console.log(y);
     // values?.find(d => (d === "yes"))
