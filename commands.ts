@@ -1,5 +1,6 @@
 import ping from "./cogs/ping";
 import showui, { selectHandler, showUiHandler } from "./cogs/show_ui";
+import todo from "./cogs/todo";
 
 
 // Custom types
@@ -9,9 +10,17 @@ type CommandTypes = {
         name: string,
         description: string,
         type: number,
+        options?: Array<commandOptionTypes>
     },
     global: boolean,
     exec: Function
+}
+
+type commandOptionTypes = {
+    type: number,
+    name: string,
+    description?: string,
+    options?: Array<commandOptionTypes>
 }
 
 type MessageComponentsTypes = {
@@ -41,9 +50,27 @@ const commands: Array<CommandTypes> = [
         global: false,
         exec: showui,
     },
-    // {
-    //     name: "user"
-    // }
+    // create a todo command -> Basic usage
+    {
+        name: "todo",
+        command: {
+            type: 1,
+            name: "todo",
+            description: "Todo list",
+            options: [{
+                type: 1,
+                name: "add",
+                description: "Add a todo",
+                options: [{
+                    type: 3,
+                    name: "todo",
+                    description: "Your todo"
+                }]
+            }]
+        },
+        global: false,
+        exec: todo
+    }
 ]
 
 // Message Components Handlers

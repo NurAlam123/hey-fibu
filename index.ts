@@ -2,6 +2,7 @@ import express from 'express';
 import { InteractionResponseType, InteractionType, verifyKeyMiddleware } from 'discord-interactions';
 import verifyDiscordRequest from './discord/verifyDiscordRequest';
 import commands, { messageComponents } from './commands';
+import type { ApplicationCommandDataStructure } from './discord/discordTypes';
 
 // CONSTANTS
 const PUBLIC_KEY = process.env.PUBLIC_KEY || '';
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 // Interactions
 app.post("/interactions", async (req, res) => {
     const { type, id, data } = req.body;
+    // console.log(req.body)
 
     // Acknowledging PING requests for interactions endpoint url validation
     if (type === InteractionType.PING) {

@@ -22,6 +22,32 @@ export interface InteractionObject<T> {
     context: object
 }
 
+export interface ApplicationCommandDataStructure {
+    id: string,
+    name: string,
+    type: number,
+    resolved?: ResolveDataStructure
+    options?: Array<ApplicationCommandInteractionDataOptionStructure>,
+    guild_id?: string,
+    target_id?: string
+}
+
+export interface ApplicationCommandOptions {
+    type: number,
+    name: string,
+    name_localizations?: object,
+    description: string,
+    description_localizations?: object,
+    required: boolean,
+    choices: Array<ApplicationCommandOptionChoiceStructure>
+}
+
+export interface ApplicationCommandOptionChoiceStructure {
+    name: string,
+    name_localizations?: object,
+    value: string | number
+}
+
 export interface ApplicationStructure {
     id: string,
     name: string,
