@@ -1,33 +1,25 @@
 import ping from "./cogs/ping";
+import { assignRole } from "./cogs/role";
 import showui, { selectHandler, showUiHandler } from "./cogs/show_ui";
+import todo, { todoListEditHandler } from "./cogs/todo";
 
-// Custom types
-type CommandTypes = {
-  name: string;
-  command: {
-    name: string;
-    description: string;
-    type: number;
-    options?: Array<commandOptionTypes>;
-  };
-  global: boolean;
-  exec: Function;
-};
-
-type commandOptionTypes = {
-  type: number;
-  name: string;
-  description?: string;
-  options?: Array<commandOptionTypes>;
-};
-
-type MessageComponentsTypes = {
-  custom_id: string;
-  handler: Function;
-};
+// Command Types
+enum CommandTypes {
+  SUB_COMMAND = 1,
+  SUB_COMMAND_GROUP = 2,
+  STRING = 3,
+  INTEGER = 4,
+  BOOLEAN = 5,
+  USER = 6,
+  CHANNEL = 7,
+  ROLE = 8,
+  MENTIONABLE = 9,
+  NUMBER = 10,
+  ATTACHMENT = 11,
+}
 
 // Application Commands
-const commands: Array<CommandTypes> = [
+const commands: Array<CustomCommand> = [
   {
     name: "ping",
     command: {
@@ -43,40 +35,93 @@ const commands: Array<CommandTypes> = [
     command: {
       name: "showui",
       description: "Show button",
-      type: 1,
+      type: CommandTypes.SUB_COMMAND,
     },
     global: false,
     exec: showui,
   },
-  // // create a todo command -> Basic usage
+  // Role selector
   // {
-  //   name: "todo",
+  //   name: "role",
   //   command: {
-  //     type: 1,
-  //     name: "todo",
-  //     description: "Todo list",
+  //     type: CommandTypes.SUB_COMMAND,
+  //     name: "role",
+  //     description: "Role selector.",
   //     options: [
   //       {
-  //         type: 1,
-  //         name: "add",
-  //         description: "Add a todo",
+  //         type: CommandTypes.SUB_COMMAND,
+  //         name: "create",
+  //         description: "Create a role group.",
   //         options: [
   //           {
-  //             type: 3,
-  //             name: "todo",
-  //             description: "Your todo",
+  //             type: CommandTypes.STRING,
+  //             name: "group_name",
+  //             description: "Name of the role group",
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         type: CommandTypes.SUB_COMMAND,
+  //         name: "add",
+  //         description: "Add roles to role group",
+  //         options: [
+  //           {
+  //             type: CommandTypes.ROLE,
+  //             name: "role",
+  //             description: "Roles to be added",
   //           },
   //         ],
   //       },
   //     ],
   //   },
   //   global: false,
-  //   exec: todo,
+  //   exec: assignRole,
   // },
+
+  // create a todo command -> Basic usage
+  {
+    name: "todo",
+    command: {
+      type: CommandTypes.SUB_COMMAND,
+      name: "todo",
+      description: "Todo list",
+      options: [
+        {
+          type: CommandTypes.SUB_COMMAND,
+          name: "add",
+          description: "Add a todo",
+          options: [
+            {
+              type: CommandTypes.STRING,
+              name: "content",
+              description: "Your todo",
+            },
+          ],
+        },
+        {
+          type: CommandTypes.SUB_COMMAND,
+          name: "edit",
+          description: "Edit a todo",
+        },
+        {
+          type: CommandTypes.SUB_COMMAND,
+          name: "delete",
+          description: "Delete a todo",
+        },
+        {
+          type: CommandTypes.SUB_COMMAND,
+          name: "display",
+          description: "Display all your todos.",
+        },
+      ],
+    },
+    global: false,
+    exec: todo,
+  },
 ];
 
 // Message Components Handlers
-export const messageComponents: Array<MessageComponentsTypes> = [
+export const messageComponents: Array<MessageComponents> = [
   {
     custom_id: "button_click",
     handler: showUiHandler,
@@ -84,6 +129,10 @@ export const messageComponents: Array<MessageComponentsTypes> = [
   {
     custom_id: "select_ui",
     handler: selectHandler,
+  },
+  {
+    custom_id: "todo_list_edit",
+    handler: todoListEditHandler,
   },
 ];
 

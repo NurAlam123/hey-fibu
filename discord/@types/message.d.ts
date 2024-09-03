@@ -3,6 +3,7 @@ type MessageTypes = {
   components?: Array<MessageComponent>;
   tts?: boolean;
   embeds?: Array<Embed>;
+  ephemeral?: boolean;
 };
 
 type MessageReferenceStructure = {
