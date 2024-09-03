@@ -1,18 +1,6 @@
 import commands from "../../commands";
 import axiosFetch from "../../utils/axiosFetch";
 
-// TYPES
-type commandsType = {
-  name: string;
-  command: {
-    name: string;
-    description: string;
-    type: number;
-  };
-  global?: boolean;
-  ext?: Function;
-};
-
 // Install commands to guild or guilds or global
 const installCommands = async (
   endpoint: string,
@@ -83,7 +71,7 @@ const getGuildCommands = async (appID: string, guildID: number | string) => {
 };
 
 const syncCommand = async (appID: string, guildID: string = "") => {
-  const commandsData: Array<commandsType> = commands;
+  const commandsData: Array<CustomCommand> = commands;
 
   const filterCommands = commandsData.map((command) => command.command);
 

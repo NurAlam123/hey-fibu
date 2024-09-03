@@ -4,7 +4,13 @@ import Message from "../ui/Message";
 
 const sendMessage = async (
   res: Response,
-  { content = "", components = [], tts = false, embeds = [] }: MessageTypes
+  {
+    content = "",
+    components = [],
+    tts = false,
+    embeds = [],
+    ephemeral = false,
+  }: MessageTypes
 ) => {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -13,6 +19,7 @@ const sendMessage = async (
       components,
       tts,
       embeds,
+      ephemeral,
     }),
   });
 };

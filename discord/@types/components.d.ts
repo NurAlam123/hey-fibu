@@ -27,3 +27,15 @@ type OptionStructureType = {
   emoji?: string | EmojiType;
   is_default?: boolean;
 };
+
+type TextInputStructure = {
+  type?: number;
+  custom_id: string;
+  label: string;
+  style?: number;
+  min_length?: number;
+  max_length?: number;
+  required?: boolean;
+  value?: string;
+  placeholder?: string;
+};
