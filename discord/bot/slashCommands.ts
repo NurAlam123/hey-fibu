@@ -71,7 +71,7 @@ const getGuildCommands = async (appID: string, guildID: number | string) => {
 };
 
 const syncCommand = async (appID: string, guildID: string = "") => {
-  const commandsData: Array<CommandType> = commands;
+  const commandsData: Array<CustomCommand> = commands;
 
   const filterCommands = commandsData.map((command) => command.command);
 
