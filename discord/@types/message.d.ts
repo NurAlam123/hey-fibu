@@ -76,7 +76,9 @@ interface MessageStructure {
 
 interface MessageComponent {
   type: number;
-  components: Array<ButtonType | SelectMenuType | OptionStructureType>;
+  components: Array<
+    ButtonType | SelectMenuType | OptionStructureType | TextInputStructure
+  >;
 }
 
 interface MessageComponentDataStructure {
