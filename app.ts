@@ -1,7 +1,7 @@
 import express from "express";
 import { InteractionResponseType, InteractionType } from "discord-interactions";
 import verifyDiscordRequest from "./discord/verifyDiscordRequest";
-import commands, { messageComponents } from "./commands";
+import commands, { messageComponents, modalHandlers } from "./commands";
 import config from "./config";
 
 // CONSTANTS
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 // Interactions
 app.post("/interactions", async (req, res) => {
   const { type, id, data } = req.body;
-  // console.log(req.body);
+  console.log(req.body.type);
 
   // Acknowledging PING requests for interactions endpoint url validation
   if (type === InteractionType.PING) {
@@ -35,7 +35,7 @@ app.post("/interactions", async (req, res) => {
       const slashCommands = commands.filter(
         (command) => command.name === name
       )[0];
-      slashCommands.exec(res, data, req.body);
+      slashCommands.exec(res, req.body);
     }
   } catch (err) {
     console.error(err);
@@ -45,10 +45,25 @@ app.post("/interactions", async (req, res) => {
   try {
     if (type === InteractionType.MESSAGE_COMPONENT && id) {
       const { custom_id } = data;
+      console.log(custom_id);
       const components = messageComponents.filter(
         (components) => components.custom_id === custom_id
       );
       !(components.length <= 0) && components[0].handler(res, req.body);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  // Modal Submit Handler
+  try {
+    if (type === InteractionType.MODAL_SUBMIT && id) {
+      const { custom_id } = data;
+      // console.log(custom_id);
+      const modal = modalHandlers.filter(
+        (modal) => modal.custom_id === custom_id
+      );
+      !(modal.length <= 0) && modal[0].handler(res, req.body);
     }
   } catch (err) {
     console.error(err);

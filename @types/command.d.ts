@@ -31,7 +31,9 @@ type CommandChoice = {
   value: string | number;
 };
 
-type MessageComponents = {
+type MessageComponentHandler = {
   custom_id: string;
   handler: Function;
 };
+
+type ModalHandler = MessageComponentHandler;

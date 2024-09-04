@@ -6,8 +6,12 @@ import { client } from "./utils/database";
 const PORT = config.PORT;
 
 async function run() {
-  // Connect to database
-  await client.connect();
+  try {
+    // Connect to database
+    await client.connect();
+  } catch {
+    console.log("Can't connect to database!");
+  }
 
   // Start the express server :3
   app.listen(PORT, async () => {

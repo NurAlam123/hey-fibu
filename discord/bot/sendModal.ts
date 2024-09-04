@@ -1,14 +1,19 @@
 import { InteractionResponseType } from "discord-interactions";
 import type { Response } from "express";
-import Message from "../ui/Message";
+import Modal from "../models/Modal";
 
-const sendMessage = async (res: Response) => {
+const sendModal = async (
+  res: Response,
+  { custom_id, title, components }: Modal<MessageComponent>
+) => {
   return res.send({
     type: InteractionResponseType.MODAL,
-    data: {
-      
-    },
+    data: Modal({
+      custom_id,
+      title,
+      components,
+    }),
   });
 };
 
-export default sendMessage;
+export default sendModal;

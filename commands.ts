@@ -1,7 +1,11 @@
 import ping from "./cogs/ping";
 import { assignRole } from "./cogs/role";
 import showui, { selectHandler, showUiHandler } from "./cogs/show_ui";
-import todo, { todoListEditHandler } from "./cogs/todo";
+import todo, {
+  editTodoModalHandler,
+  todoListDeleteHandler,
+  todoListEditHandler,
+} from "./cogs/todo";
 
 // Command Types
 enum CommandTypes {
@@ -121,7 +125,7 @@ const commands: Array<CustomCommand> = [
 ];
 
 // Message Components Handlers
-export const messageComponents: Array<MessageComponents> = [
+export const messageComponents: Array<MessageComponentHandler> = [
   {
     custom_id: "button_click",
     handler: showUiHandler,
@@ -133,6 +137,18 @@ export const messageComponents: Array<MessageComponents> = [
   {
     custom_id: "todo_list_edit",
     handler: todoListEditHandler,
+  },
+  {
+    custom_id: "todo_list_delete",
+    handler: todoListDeleteHandler,
+  },
+];
+
+// Modal Handlers
+export const modalHandlers: Array<ModalHandler> = [
+  {
+    custom_id: "edit_todo_modal",
+    handler: editTodoModalHandler,
   },
 ];
 
