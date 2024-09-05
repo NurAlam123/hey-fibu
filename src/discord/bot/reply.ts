@@ -5,12 +5,12 @@ import Message from "../ui/Message";
 const reply = async (
   res: Response,
   content: string,
-  components: Array<object> = [],
+  components: Array<MessageComponent> = [],
   tts: boolean = false
 ) => {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-    data: Message(content, components, tts),
+    data: Message({ content, components, tts }),
   });
 };
 

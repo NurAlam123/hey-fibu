@@ -1,4 +1,4 @@
-type EmojiType = {
+type Emoji = {
   id?: number | string | null;
   name: string;
   animated?: boolean;

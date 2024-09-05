@@ -1,5 +1,3 @@
-// import type { InteractionType } from "discord-interactions";
-
 interface InteractionObject<T> {
   id?: string;
   application_id: string;

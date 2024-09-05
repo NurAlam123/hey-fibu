@@ -69,7 +69,7 @@ interface Channel {
   message_count?: number;
   member_count?: number;
   thread_metadata?: ThreadMetadataStructure;
-  member?: TThreadMemberStructure;
+  member?: ThreadMemberStructure;
   default_auto_archive_duration?: number;
   permissions?: string;
   flags?: number;

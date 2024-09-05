@@ -6,7 +6,7 @@ const Emoji = async ({
   id = "",
   animated = false,
   guild_id = "",
-}: EmojiType) => {
+}: Emoji) => {
   if (
     (!id && !name) ||
     (name.startsWith(":") &&
@@ -33,7 +33,7 @@ const Emoji = async ({
     id = null;
   }
 
-  return <EmojiType>{
+  return <Emoji>{
     id,
     name,
     animated,

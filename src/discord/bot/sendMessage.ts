@@ -10,7 +10,7 @@ const sendMessage = async (
     tts = false,
     embeds = [],
     ephemeral = false,
-  }: MessageTypes
+  }: Message
 ) => {
   return res.send({
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,

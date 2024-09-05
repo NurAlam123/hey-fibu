@@ -1,22 +1,26 @@
 {
-  "name": ".",
-  "module": "index.ts",
-  "type": "module",
+  "name": "fibu",
+  "author": {
+    "name": "Nur Alam"
+  },
   "scripts": {
     "start": "node ./dist/index.js",
+    "build": "rimraf dist && tsc",
     "dev": "bun run --watch index.ts",
-    "register": "bun run registerCommands.ts"
+    "register": "bun run ./src/registerCommands.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/express": "^4.17.21",
+    "rimraf": "^6.0.1"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@types/express": "^4.17.21",
-    "axios": "^1.7.2",
+    "axios": "^1.7.7",
     "discord-interactions": "^3.4.0",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongodb": "^6.8.0",
     "node-emoji": "^2.1.3"

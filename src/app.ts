@@ -1,11 +1,12 @@
 import express from "express";
 import { InteractionResponseType, InteractionType } from "discord-interactions";
-import verifyDiscordRequest from "./discord/verifyDiscordRequest";
-import commands, { messageComponents, modalHandlers } from "./commands";
 import config from "./config";
+import commands, { messageComponents, modalHandlers } from "./commands";
+import verifyDiscordRequest from "./discord/verifyDiscordRequest";
 
 // CONSTANTS
 const PUBLIC_KEY = config.PUBLIC_KEY;
+const PORT = config.PORT;
 
 // Express apps
 const app = express();
@@ -21,7 +22,6 @@ app.get("/", (req, res) => {
 // Interactions
 app.post("/interactions", async (req, res) => {
   const { type, id, data } = req.body;
-  console.log(req.body.type);
 
   // Acknowledging PING requests for interactions endpoint url validation
   if (type === InteractionType.PING) {

@@ -1,4 +1,5 @@
-import axios, { Axios, type AxiosRequestConfig } from "axios";
+import type { AxiosRequestConfig } from "axios";
+import axios from "axios";
 
 const TOKEN = process.env.TOKEN || "";
 

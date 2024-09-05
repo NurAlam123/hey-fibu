@@ -5,8 +5,8 @@ const Button = ({
   custom_id,
   style = ButtonStyleTypes.PRIMARY,
   emoji = "",
-}: ButtonType) => {
-  return <ButtonType>{
+}: Button) => {
+  return <Button>{
     type: 2,
     style,
     label,
