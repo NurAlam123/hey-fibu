@@ -6,7 +6,7 @@ const Message = ({
   tts = false,
   embeds = [],
   ephemeral = false,
-}: MessageTypes) => ({
+}: Message) => ({
   content,
   components,
   tts,

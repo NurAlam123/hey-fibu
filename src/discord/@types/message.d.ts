@@ -1,4 +1,4 @@
-type MessageTypes = {
+type Message = {
   content?: string;
   components?: Array<MessageComponent>;
   tts?: boolean;
@@ -76,15 +76,13 @@ interface MessageStructure {
 
 interface MessageComponent {
   type: number;
-  components: Array<
-    ButtonType | SelectMenuType | OptionStructureType | TextInputStructure
-  >;
+  components: Array<Button | SelectMenu | OptionStructure | TextInputStructure>;
 }
 
 interface MessageComponentDataStructure {
   custom_id: string;
   component_type: number;
-  values?: Array<OptionStructureType | string>;
+  values?: Array<OptionStructure | string>;
   resolved?: ResolveDataStructure;
 }
 

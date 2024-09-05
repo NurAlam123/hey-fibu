@@ -7,8 +7,8 @@ const SelectMenu = ({
   min_values = 1,
   max_values = 1,
   disable = false,
-}: SelectMenuType) => {
-  return <SelectMenuType>{
+}: SelectMenu) => {
+  return <SelectMenu>{
     type: MessageComponentTypes.STRING_SELECT,
     custom_id,
     options,

@@ -4,7 +4,7 @@ const Option = ({
   description = "",
   emoji = "",
   is_default = false,
-}: OptionStructureType) => {
+}: OptionStructure) => {
   const optionStructure = {
     label,
     value,
