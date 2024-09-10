@@ -26,13 +26,16 @@ const installCommands = async (
 const installGuildCommands = async (
   applicationID: string,
   guildID: string,
-  commands: Array<Object>
+  commands: Array<Command>
 ) => {
   const endpoint = `applications/${applicationID}/guilds/${guildID}/commands`;
   const applicationCommands = JSON.stringify(commands);
 
   try {
     await installCommands(endpoint, "PUT", applicationCommands);
+    for (const command of commands) {
+      console.log(`ADDED ==> ${command.name} ==> Guild: ${guildID}`);
+    }
   } catch (err) {
     console.error(err);
   }
@@ -41,13 +44,16 @@ const installGuildCommands = async (
 // Add commands to
 const installGlobalCommands = async (
   applicationID: string,
-  commands: Array<Object>
+  commands: Array<Command>
 ) => {
   const endpoint = `applications/${applicationID}/commands`;
   const applicationCommands = JSON.stringify(commands);
 
   try {
     await installCommands(endpoint, "PUT", applicationCommands);
+    for (const command of commands) {
+      console.log(`ADDED ==> ${command.name} ==> global`);
+    }
   } catch (err) {
     console.error(err);
   }

@@ -1,14 +1,16 @@
 // Custom types
 interface CustomCommand {
   name: string;
-  command: {
-    type: number;
-    name: string;
-    description: string;
-    options?: Array<CommandOption>;
-  };
+  command: Command;
   global: boolean;
   exec: Function;
+}
+
+interface Command {
+  type: number;
+  name: string;
+  description: string;
+  options?: Array<CommandOption>;
 }
 
 interface CommandOption {

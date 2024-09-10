@@ -1,31 +1,36 @@
 import express from "express";
-import { InteractionResponseType, InteractionType } from "discord-interactions";
+import {
+  InteractionResponseType,
+  InteractionType,
+  verifyKeyMiddleware,
+} from "discord-interactions";
 import config from "./config";
 import commands, { messageComponents, modalHandlers } from "./commands";
 import verifyDiscordRequest from "./discord/verifyDiscordRequest";
+import getApplication from "./discord/bot/getApplication";
 
 // CONSTANTS
-const PUBLIC_KEY = config.PUBLIC_KEY;
-const PORT = config.PORT;
+const PUBLIC_KEY = config.BOT_PUBLIC_KEY;
 
 // Express apps
 const app = express();
 
 // Middleware
-app.use(express.json({ verify: verifyDiscordRequest(PUBLIC_KEY) }));
+// app.use(express.json({ verify: verifyDiscordRequest(PUBLIC_KEY) }));
 
 // ==== Routes ====
-app.get("/", (req, res) => {
-  res.send("Running bot!");
+app.get("/", async (req, res) => {
+  const bot = await getApplication();
+  res.send(`${bot.name} is online!`);
 });
 
 // Interactions
-app.post("/interactions", async (req, res) => {
+app.post("/interactions", verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
   const { type, id, data } = req.body;
 
   // Acknowledging PING requests for interactions endpoint url validation
   if (type === InteractionType.PING) {
-    return res.send({ type: InteractionResponseType.PONG });
+    return res.status(200).send({ type: InteractionResponseType.PONG });
   }
 
   // Application Commands
