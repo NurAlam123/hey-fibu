@@ -10,7 +10,7 @@ const axiosFetch = async (url: string, options: AxiosRequestConfig) => {
     headers: {
       Authorization: `Bot ${TOKEN}`,
       "Content-Type": "application/json; charset=UTF-8",
-      "User-Agent": "DiscordBot (https://discord.com, 1.0.0)",
+      "User-Agent": "Fibu (https://discord.com, 1.0.0)",
     },
     ...options,
   };
