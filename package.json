@@ -6,12 +6,18 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "build": "rimraf dist && tsc",
-    "dev": "bun run --watch index.ts",
+    "dev": "bun run --watch ./src/index.ts",
     "register": "bun run ./src/registerCommands.ts"
   },
   "devDependencies": {
+    "@inquirer/prompts": "^6.0.1",
     "@types/bun": "latest",
     "@types/express": "^4.17.21",
+    "@types/figlet": "^1.5.8",
+    "clui": "^0.3.6",
+    "figlet": "^1.7.0",
+    "minimist": "^1.2.8",
+    "picocolors": "^1.1.0",
     "rimraf": "^6.0.1"
   },
   "peerDependencies": {

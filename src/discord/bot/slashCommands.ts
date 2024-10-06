@@ -1,4 +1,4 @@
-import commands from "../../commands";
+import applicationCommands from "../../commands/applicationCommands";
 import axiosFetch from "../../utils/axiosFetch";
 
 // Install commands to guild or guilds or global
@@ -26,52 +26,50 @@ const installCommands = async (
 const installGuildCommands = async (
   applicationID: string,
   guildID: string,
-  commands: Array<Object>
+  commands: Array<Command>
 ) => {
   const endpoint = `applications/${applicationID}/guilds/${guildID}/commands`;
   const applicationCommands = JSON.stringify(commands);
 
   try {
     await installCommands(endpoint, "PUT", applicationCommands);
+    for (const command of commands) {
+      console.log(`ADDED ==> ${command.name} ==> Guild: ${guildID}`);
+    }
   } catch (err) {
     console.error(err);
   }
 };
 
+// Add command to a specific guild
+const installGuildCommand = async (
+  applicationID: string,
+  guildID: string,
+  command: Command
+) => {
+  const endpoint = `applications/${applicationID}/`;
+};
+
 // Add commands to
 const installGlobalCommands = async (
   applicationID: string,
-  commands: Array<Object>
+  commands: Array<Command>
 ) => {
   const endpoint = `applications/${applicationID}/commands`;
   const applicationCommands = JSON.stringify(commands);
 
   try {
     await installCommands(endpoint, "PUT", applicationCommands);
+    for (const command of commands) {
+      console.log(`ADDED ==> ${command.name} ==> global`);
+    }
   } catch (err) {
     console.error(err);
   }
 };
 
-// Fetch global application commands
-const getGlobalCommands = async (appID: string) => {
-  const res = await axiosFetch(`/applications/${appID}/commands`, {
-    method: "get",
-  });
-  return res.data;
-};
-
-// Fetch guild application commands
-const getGuildCommands = async (appID: string, guildID: number | string) => {
-  const res = await axiosFetch(
-    `/applications/${appID}/guilds/${guildID}/commands`,
-    { method: "get" }
-  );
-  return res.data;
-};
-
 const syncCommand = async (appID: string, guildID: string = "") => {
-  const commandsData: Array<CustomCommand> = commands;
+  const commandsData: Array<CustomCommand> = applicationCommands;
 
   const filterCommands = commandsData.map((command) => command.command);
 
@@ -80,10 +78,4 @@ const syncCommand = async (appID: string, guildID: string = "") => {
   console.log("INFO: commands synced!");
 };
 
-export {
-  installGuildCommands,
-  installGlobalCommands,
-  getGlobalCommands,
-  getGuildCommands,
-  syncCommand,
-};
+export { installGuildCommands, installGlobalCommands, syncCommand };

@@ -1,11 +1,12 @@
-import type { Request, Response } from "express";
+import type { Response } from "express";
 import { findDB, updateDB, writeDB } from "../utils/database";
 import sendMessage from "../discord/bot/sendMessage";
 import ActionRow from "../discord/ui/ActionRow";
 import SelectMenu from "../discord/ui/SelectMenu";
-import Button from "../discord/ui/Button";
 import TextInput from "../discord/ui/TextInput";
 import sendModal from "../discord/bot/sendModal";
+
+const collection_name = "todo";
 
 const todo = async (res: Response, body: InteractionObject<CommandOption>) => {
   const data = body.data;
@@ -13,30 +14,60 @@ const todo = async (res: Response, body: InteractionObject<CommandOption>) => {
   const command = data.options[0];
   switch (command.name) {
     case "add":
-      if (!command.options || !command.options[0].value) return;
+      if (!command.options || command.options.length < 1)
+        return await sendMessage(res, {
+          content: "You have to add a todo content",
+        });
+      if (!command.options[0].value) return;
       await addTodo(res, body.member.user.id, command.options[0].value);
       break;
+
     case "edit":
       await editTodo(res, body.member.user.id);
       break;
+
     case "delete":
       await deleteTodo(res, body.member.user.id);
       break;
+
+    case "display":
+      await displayTodo(res, body.member.user.id);
+      break;
+
     default:
       break;
   }
 };
 
+// =============== Display todo ===========
+const displayTodo = async (res: Response, userID: string) => {
+  const found = await findDB({
+    collection_name,
+    query: { userID: userID },
+  });
+
+  if (!found) return;
+
+  const todos: Array<Todo> = found.todo;
+  let messageContent = "";
+  for (const todo of todos) {
+    const date = new Date(todo.createdAt).toDateString();
+    messageContent += `${todo.id}. **${todo.content}**\n_${date}_\n`;
+  }
+  return await sendMessage(res, { content: messageContent, ephemeral: true });
+};
+
 // ============== Add todo ===============
 const addTodo = async (res: Response, userID: string, content: string) => {
   const found = await findDB({
-    collection_name: "todo",
+    collection_name,
     query: { userID: userID },
   });
   // Update the todo list if already exists otherwise insert
   if (found) {
     const todoID = found.todoID + 1;
     const todo: Array<Todo> = found.todo;
+    // Add the new todo in the list
     todo.push({
       content,
       id: todoID,
@@ -48,7 +79,7 @@ const addTodo = async (res: Response, userID: string, content: string) => {
         todo,
       },
     };
-    await updateDB({ collection_name: "todo", query: { userID }, doc });
+    await updateDB({ collection_name, query: { userID }, doc });
     return await sendMessage(res, {
       content: "Your todo  has been added.",
       ephemeral: true,
@@ -66,14 +97,17 @@ const addTodo = async (res: Response, userID: string, content: string) => {
       },
     ],
   };
-  await writeDB({ collection_name: "todo", doc });
-  return await sendMessage(res, { content: "Your todo has been added." });
+  await writeDB({ collection_name, doc });
+  return await sendMessage(res, {
+    content: "Your todo has been added.",
+    ephemeral: true,
+  });
 };
 
 // ========= Edit todo =========
 const editTodo = async (res: Response, userID: string) => {
   const found = await findDB({
-    collection_name: "todo",
+    collection_name,
     query: { userID: userID },
   });
   if (!found)
@@ -112,7 +146,7 @@ export const todoListEditHandler = async (
 
   // Find and send a  modal with text input to edit the todo
   const found = await findDB({
-    collection_name: "todo",
+    collection_name,
     query: { userID: todoData.userID },
   });
   if (!found) return;
@@ -156,7 +190,7 @@ export const editTodoModalHandler = async (
   };
 
   const foundTodos = await findDB({
-    collection_name: "todo",
+    collection_name,
     query,
   });
 
@@ -171,22 +205,23 @@ export const editTodoModalHandler = async (
     },
   };
 
-  await updateDB({ collection_name: "todo", query, doc });
+  await updateDB({ collection_name, query, doc });
   return await sendMessage(res, {
-    content: "Your todo  has been updated.",
+    content: "Your todo has been updated.",
     ephemeral: true,
   });
 };
 
 // ========= Delete todo =========
 const deleteTodo = async (res: Response, userID: string) => {
-  console.log("heere");
   const found = await findDB({
-    collection_name: "todo",
+    collection_name,
     query: { userID: userID },
   });
+
   if (!found)
     return await sendMessage(res, { content: "You haven't added any todo." });
+
   const todos: Array<Todo> = found.todo;
   const menu = [];
   for (let todo of todos) {
@@ -212,7 +247,38 @@ export const todoListDeleteHandler = async (
   res: Response,
   body: InteractionObject<MessageComponentDataStructure>
 ) => {
-  console.log(body.data);
+  // Get and parse the value of selected todo
+  const data = body.data.values;
+  if (!data) return;
+  const todoData: { userID: string; todoID: number } = JSON.parse(
+    data[0] as string
+  );
+
+  // Find the todo in the database
+  const query = { userID: todoData.userID };
+
+  const found = await findDB({
+    collection_name,
+    query,
+  });
+
+  if (!found) return;
+  const todos: Array<Todo> = found.todo;
+  const index = todoData.todoID - 1;
+  todos.splice(index, 1);
+
+  const doc = {
+    $set: {
+      todoID: found.todoID - 1,
+      todo: todos,
+    },
+  };
+
+  await updateDB({ collection_name, query, doc });
+  return await sendMessage(res, {
+    content: "Your todo has been deleted.",
+    ephemeral: true,
+  });
 };
 
 export default todo;

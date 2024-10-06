@@ -1,18 +1,34 @@
 // Custom types
 interface CustomCommand {
   name: string;
-  command: {
-    type: number;
-    name: string;
-    description: string;
-    options?: Array<CommandOption>;
-  };
-  global: boolean;
+  command: Command;
   exec: Function;
 }
 
+// Command Types
+declare enum CommandTypes {
+  SUB_COMMAND = 1,
+  SUB_COMMAND_GROUP = 2,
+  STRING = 3,
+  INTEGER = 4,
+  BOOLEAN = 5,
+  USER = 6,
+  CHANNEL = 7,
+  ROLE = 8,
+  MENTIONABLE = 9,
+  NUMBER = 10,
+  ATTACHMENT = 11,
+}
+
+interface Command {
+  type: CommandTypes;
+  name: string;
+  description: string;
+  options?: Array<CommandOption>;
+}
+
 interface CommandOption {
-  type: number;
+  type: CommandTypes;
   name: string;
   description?: string;
   required?: boolean;
