@@ -1,5 +1,5 @@
 import { Response } from "express";
-import sendMessage from "../discord/bot/sendMessage";
+import send from "../discord/bot/send";
 import { findDB, updateDB, writeDB } from "../utils/database";
 import ActionRow from "../discord/ui/ActionRow";
 import SelectMenu from "../discord/ui/SelectMenu";
@@ -17,7 +17,7 @@ const role = async (res: Response, body: InteractionObject<CommandOption>) => {
     // Add roles to group
     case "add":
       if (!command.options || command.options.length < 3)
-        return await sendMessage(res, {
+        return await send(res, {
           content: "You have to provide all the required parameter",
         });
 
@@ -36,7 +36,7 @@ const role = async (res: Response, body: InteractionObject<CommandOption>) => {
     // Delete roles from group
     case "delete":
       if (!command.options || command.options.length < 1)
-        return await sendMessage(res, {
+        return await send(res, {
           content: "You have to provide all the required parameter",
         });
       if (!command.options[0].value) return;
@@ -46,7 +46,7 @@ const role = async (res: Response, body: InteractionObject<CommandOption>) => {
     // Create role group
     case "create":
       if (!command.options || command.options.length < 1)
-        return await sendMessage(res, {
+        return await send(res, {
           content: "You have to provide all the required parameter",
         });
       if (!command.options[0].value) return;
@@ -58,6 +58,22 @@ const role = async (res: Response, body: InteractionObject<CommandOption>) => {
       }
 
       await createGroup(res, body.guild_id, group_name, multi_selection);
+      break;
+
+    case "attach":
+      if (!command.options || command.options.length < 1)
+        return await send(res, {
+          content: "You have to provide all the required parameter",
+        });
+      if (!command.options[0].value) return;
+      // const group_name = command.options[0].value;
+      // let multi_selection = false;
+      if (command.options[1]) {
+        const value = command.options[1].value;
+        multi_selection = value ? true : false;
+      }
+
+      // await createGroup(res, body.guild_id, group_name, multi_selection);
       break;
 
     default:
@@ -78,7 +94,7 @@ const createGroup = async (
     query: { guild_id, group_name },
   });
   if (found) {
-    return await sendMessage(res, {
+    return await send(res, {
       content: "Role group already exist for this guild.",
     });
   }
@@ -94,7 +110,7 @@ const createGroup = async (
     collection_name: "role",
     doc,
   });
-  return await sendMessage(res, {
+  return await send(res, {
     content: `Role group created as **${group_name}**`,
   });
 };
@@ -114,7 +130,7 @@ const addRole = async (
     query,
   });
   if (!found)
-    return await sendMessage(res, {
+    return await send(res, {
       content: "No found any data with the role group name.",
     });
   const roles: Array<RoleStored> = found.roles;
@@ -127,7 +143,7 @@ const addRole = async (
   };
 
   await updateDB({ collection_name: "role", query, doc });
-  return await sendMessage(res, { content: `${role_name} Role added.` });
+  return await send(res, { content: `${role_name} Role added.` });
 };
 
 // ========= Delete role from a group =========
@@ -142,7 +158,7 @@ const deleteRole = async (
   });
 
   if (!found)
-    return await sendMessage(res, {
+    return await send(res, {
       content: "There is no role assigned to this group",
     });
 
@@ -168,7 +184,7 @@ const deleteRole = async (
     ]),
   ];
 
-  return await sendMessage(res, { components: listUi, ephemeral: true });
+  return await send(res, { components: listUi, ephemeral: true });
 };
 
 // Handle the delete event
@@ -208,10 +224,17 @@ export const roleDeleteHandler = async (
   };
 
   await updateDB({ collection_name, query, doc });
-  return await sendMessage(res, {
+  return await send(res, {
     content: `**${roleData.placeholder} has been deleted from **${roleData.group_name}** group!`,
     ephemeral: true,
   });
 };
+
+// ========= Attach the role =========
+const roleAttach = async (
+  res: Response,
+  group_name: string,
+  message_id: string
+) => {};
 
 export default role;

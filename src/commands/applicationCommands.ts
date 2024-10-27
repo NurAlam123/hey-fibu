@@ -29,7 +29,8 @@ const applicationCommands: Array<CustomCommand> = [
     },
     exec: ping,
   },
-  // // For testing ui and and message components
+
+  // For testing ui and and message components
   // {
   //   name: "showui",
   //   command: {
@@ -39,6 +40,7 @@ const applicationCommands: Array<CustomCommand> = [
   //   },
   //   exec: showui,
   // },
+
   // Role selector
   {
     name: "role",
@@ -103,6 +105,26 @@ const applicationCommands: Array<CustomCommand> = [
             },
           ],
         },
+        {
+          type: CommandTypes.SUB_COMMAND,
+          name: "attach",
+          description: "Attach the role group to the message",
+          options: [
+            {
+              type: CommandTypes.INTEGER,
+              name: "message_id",
+              description:
+                "Message id of the message that it should attach the role.",
+              required: true,
+            },
+            {
+              type: CommandTypes.STRING,
+              name: "group_name",
+              description: "Name of the role group.",
+              required: true,
+            },
+          ],
+        },
       ],
     },
     exec: role,
@@ -141,7 +163,7 @@ const applicationCommands: Array<CustomCommand> = [
         {
           type: CommandTypes.SUB_COMMAND,
           name: "display",
-          description: "Display all your todos.",
+          description: "Display all your todo.",
         },
       ],
     },

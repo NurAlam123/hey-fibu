@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import sendMessage from "../discord/bot/sendMessage";
+import send from "../discord/bot/send";
 import axiosFetch from "../utils/axiosFetch";
 import DiscordEmbed from "../discord/ui/Embed";
 
@@ -12,7 +12,7 @@ const ping = async (res: Response) => {
     title: "PONG!!",
     description: `PONG! **${timeTook}ms!**`,
   });
-  await sendMessage(res, { embeds: [embed] });
+  await send(res, { embeds: [embed] });
 };
 
 export default ping;

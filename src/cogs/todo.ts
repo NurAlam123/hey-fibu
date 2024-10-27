@@ -1,6 +1,6 @@
 import type { Response } from "express";
 import { findDB, updateDB, writeDB } from "../utils/database";
-import sendMessage from "../discord/bot/sendMessage";
+import send from "../discord/bot/send";
 import ActionRow from "../discord/ui/ActionRow";
 import SelectMenu from "../discord/ui/SelectMenu";
 import TextInput from "../discord/ui/TextInput";
@@ -15,7 +15,7 @@ const todo = async (res: Response, body: InteractionObject<CommandOption>) => {
   switch (command.name) {
     case "add":
       if (!command.options || command.options.length < 1)
-        return await sendMessage(res, {
+        return await send(res, {
           content: "You have to add a todo content",
         });
       if (!command.options[0].value) return;
@@ -54,7 +54,7 @@ const displayTodo = async (res: Response, userID: string) => {
     const date = new Date(todo.createdAt).toDateString();
     messageContent += `${todo.id}. **${todo.content}**\n_${date}_\n`;
   }
-  return await sendMessage(res, { content: messageContent, ephemeral: true });
+  return await send(res, { content: messageContent, ephemeral: true });
 };
 
 // ============== Add todo ===============
@@ -80,7 +80,7 @@ const addTodo = async (res: Response, userID: string, content: string) => {
       },
     };
     await updateDB({ collection_name, query: { userID }, doc });
-    return await sendMessage(res, {
+    return await send(res, {
       content: "Your todo  has been added.",
       ephemeral: true,
     });
@@ -98,7 +98,7 @@ const addTodo = async (res: Response, userID: string, content: string) => {
     ],
   };
   await writeDB({ collection_name, doc });
-  return await sendMessage(res, {
+  return await send(res, {
     content: "Your todo has been added.",
     ephemeral: true,
   });
@@ -111,7 +111,7 @@ const editTodo = async (res: Response, userID: string) => {
     query: { userID: userID },
   });
   if (!found)
-    return await sendMessage(res, { content: "You haven't added any todo." });
+    return await send(res, { content: "You haven't added any todo." });
   const todos: Array<Todo> = found.todo;
   const menu = [];
   for (let todo of todos) {
@@ -129,7 +129,7 @@ const editTodo = async (res: Response, userID: string) => {
     ]),
   ];
 
-  return await sendMessage(res, { components: listUi, ephemeral: true });
+  return await send(res, { components: listUi, ephemeral: true });
 };
 
 // Handler the todo list to edit
@@ -206,7 +206,7 @@ export const editTodoModalHandler = async (
   };
 
   await updateDB({ collection_name, query, doc });
-  return await sendMessage(res, {
+  return await send(res, {
     content: "Your todo has been updated.",
     ephemeral: true,
   });
@@ -220,7 +220,7 @@ const deleteTodo = async (res: Response, userID: string) => {
   });
 
   if (!found)
-    return await sendMessage(res, { content: "You haven't added any todo." });
+    return await send(res, { content: "You haven't added any todo." });
 
   const todos: Array<Todo> = found.todo;
   const menu = [];
@@ -239,7 +239,7 @@ const deleteTodo = async (res: Response, userID: string) => {
     ]),
   ];
 
-  return await sendMessage(res, { components: listUi, ephemeral: true });
+  return await send(res, { components: listUi, ephemeral: true });
 };
 
 // Handle the delete event
@@ -275,7 +275,7 @@ export const todoListDeleteHandler = async (
   };
 
   await updateDB({ collection_name, query, doc });
-  return await sendMessage(res, {
+  return await send(res, {
     content: "Your todo has been deleted.",
     ephemeral: true,
   });

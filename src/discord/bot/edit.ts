@@ -1,29 +1,24 @@
-// import {
-//   InteractionResponseType,
-//   MessageComponent,
-// } from "discord-interactions";
-// import Message from "../ui/Message";
-// import axiosFetch from "../../utils/axiosFetch";
+import {
+  InteractionResponseType,
+  MessageComponent,
+} from "discord-interactions";
+import Message from "../ui/Message";
+import axiosFetch from "../../utils/axiosFetch";
+import { Response } from "express";
 
-// const edit = async (
-//   token: string,
-//   content: string,
-//   components: Array<MessageComponent>,
-//   tts: boolean = false
-// ) => {
-//   const APP_ID = process.env.APP_ID;
-//   const url = `/webhooks/${APP_ID}/${token}/messages/@original`;
+const edit = async (
+  res: Response,
+  interaction_token: string,
+  { content = "", components = [], tts = false, embeds = [] }: Message
+) => {
+  const APP_ID = process.env.APP_ID;
+  const url = `/webhooks/${APP_ID}/${interaction_token}/messages/@original`;
 
-//   const res = await axiosFetch(url, {
-//     method: "PATCH",
-//     data: Message({ content, components, tts }),
-//   });
-//   console.log(res);
+  await axiosFetch(url, {
+    method: "PATCH",
+    data: Message({ content, components, tts }),
+  });
+  return res.sendStatus(201);
+};
 
-//   // return res.send({
-//   //     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-//   //     data: Message(content, components, tts)
-//   // })
-// };
-
-// export default edit;
+export default edit;

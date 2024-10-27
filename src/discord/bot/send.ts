@@ -1,13 +1,10 @@
 import { InteractionResponseType } from "discord-interactions";
 import type { Response } from "express";
 import Message from "../ui/Message";
-import axiosFetch from "../../utils/axiosFetch";
-import send from "./send";
 
 // Send interaction message
-const sendMessage = async (
+const send = async (
   res: Response,
-  channel_id: string,
   {
     content = "",
     components = [],
@@ -16,20 +13,16 @@ const sendMessage = async (
     ephemeral = false,
   }: Message
 ) => {
-  const url = `/channels/${channel_id}/messages`;
-  const message = await axiosFetch(url, {
-    method: "POST",
+  return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: Message({
       content,
       components,
       tts,
       embeds,
+      ephemeral,
     }),
-  });
-  return await send(res, {
-    content: `Message has been sent!`,
-    ephemeral: true,
-  });
+  }).req.body;
 };
 
-export default sendMessage;
+export default send;

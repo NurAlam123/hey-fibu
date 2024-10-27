@@ -34,7 +34,7 @@ const ask = async () => {
     message: "Main Menu",
     choices: [
       {
-        name: "Test GUild",
+        name: "Test Guild",
         value: "test",
         description: "Add commands to the test guild",
       },
@@ -58,6 +58,17 @@ const ask = async () => {
 
   switch (answer) {
     case "test":
+      setTestCommands();
+      break;
+
+    case "global":
+      await syncCommand(APP_ID);
+      break;
+  }
+};
+
+// Set commands to test guild
+const setTestCommands = async () => {
       const guildID = await input({
         message: "Type the test guild id: ",
         validate(value) {
@@ -69,12 +80,6 @@ const ask = async () => {
         required: true,
       });
       await syncCommand(APP_ID, guildID);
-      break;
-
-    case "global":
-      await syncCommand(APP_ID);
-      break;
-  }
-};
+}
 
 runCommand();
