@@ -23,5 +23,6 @@
 
     "outDir": "./dist",
     "rootDir": "./src"
-  }
+  },
+  "exclude": ["*.mjs"]
 }

@@ -1,5 +1,5 @@
 import ping from "./cogs/ping";
-import { assignRole } from "./cogs/role";
+//import { assignRole } from "./cogs/role";
 import showui, { selectHandler, showUiHandler } from "./cogs/show_ui";
 import todo, {
   editTodoModalHandler,
@@ -31,7 +31,6 @@ const commands: Array<CustomCommand> = [
       description: "Return a pong.",
       type: 1,
     },
-    global: true,
     exec: ping,
   },
   {
@@ -41,7 +40,6 @@ const commands: Array<CustomCommand> = [
       description: "Show button",
       type: CommandTypes.SUB_COMMAND,
     },
-    global: false,
     exec: showui,
   },
   // Role selector
@@ -78,7 +76,6 @@ const commands: Array<CustomCommand> = [
   //       },
   //     ],
   //   },
-  //   global: false,
   //   exec: assignRole,
   // },
 
@@ -119,7 +116,6 @@ const commands: Array<CustomCommand> = [
         },
       ],
     },
-    global: false,
     exec: todo,
   },
 ];
